@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/charactersFragment"
-        android:name="com.geekstudio.rickandmorty.presentation.ui.fragments.CharactersFragment"
+        android:name="com.geekstudio.rickandmorty.presentation.ui.fragments.characters.CharactersFragment"
         android:label="fragment_characters"
         tools:layout="@layout/fragment_characters" />
 
