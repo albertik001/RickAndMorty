@@ -38,6 +38,7 @@ android {
             )
         }
         getByName(config.versions.debugBuildType.get()) {
+            buildConfigField("String", "BASE_URL", "\"https://rickandmortyapi.com/api/\"")
             applicationIdSuffix = ".debug"
             isDebuggable = true
         }

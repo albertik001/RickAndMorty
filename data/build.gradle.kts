@@ -7,6 +7,9 @@ plugins {
 
     // Kapt
     id("kotlin-kapt")
+
+    // Hilt
+    id(libs.plugins.hilt.android.get().pluginId)
 }
 
 android {
@@ -27,6 +30,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        getByName(config.versions.debugBuildType.get()) {
+            buildConfigField("String", "BASE_URL", "\"https://rickandmortyapi.com/api/\"")
         }
     }
     compileOptions {
@@ -54,6 +60,10 @@ dependencies {
 
     //Paging 3
     api(libs.paging.paging)
+    api(libs.bundles.paging)
 
+    // Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
 }
