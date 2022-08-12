@@ -148,6 +148,7 @@ datastore-proto = { module = "androidx.datastore:datastore", version.ref = "data
 
 #Paging
 paging-paging = { module = "androidx.paging:paging-runtime-ktx", version.ref = "paging" }
+paging-common = { module = "androidx.paging:paging-common", version.ref = "paging" }
 
 #Firebase
 firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx", version.ref = "firebaseFirestore" }
@@ -173,6 +174,7 @@ coroutines = ["coroutines-core", "coroutines-android"]
 
 #Room
 room = ["room-runtime", "room-kotlinExtensionsAndCoroutinesSupport"]
+paging = ["paging-paging", "paging-common"]
 
 #Datastore
 datastore = ["datastore-preferences", "datastore-proto"]
