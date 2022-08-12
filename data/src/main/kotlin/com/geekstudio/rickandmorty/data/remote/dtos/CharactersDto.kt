@@ -1,13 +1,14 @@
 package com.geekstudio.rickandmorty.data.remote.dtos
 
 
+import com.geekstudio.rickandmorty.domain.models.*
 import com.google.gson.annotations.SerializedName
 
-data class CharactersDto(
+data class RickAndMortyResponse<T>(
     @SerializedName("info")
     val info: Info?,
     @SerializedName("results")
-    val results: List<Result?>?
+    val results: MutableList<T>
 )
 
 data class Info(
@@ -35,7 +36,7 @@ data class Origin(
     val url: String?
 )
 
-data class Result(
+data class CharactersDto(
     @SerializedName("id")
     val id: Int?,
     @SerializedName("name")
@@ -61,3 +62,27 @@ data class Result(
     @SerializedName("created")
     val created: String?
 )
+
+fun CharactersDto.toDomain() = CharactersModel(
+    id,
+    name,
+    status,
+    species,
+    type,
+    gender,
+    origin?.toDomain(),
+    location?.toDomain(),
+    image,
+    episode,
+    url,
+    created
+)
+
+fun Origin.toDomain() = OriginModel(name, url)
+
+fun Location.toDomain() = LocationModel(name, url)
+
+fun Info.toDomain() = InfoModel(count, pages, next, prev)
+
+fun RickAndMortyResponse<CharactersDto>.toDomain() =
+    RickAndMortyResponseModel(info?.toDomain(), results.map { it.toDomain() })
