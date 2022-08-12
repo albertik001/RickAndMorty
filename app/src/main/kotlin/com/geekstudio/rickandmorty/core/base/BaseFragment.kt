@@ -59,7 +59,7 @@ abstract class BaseFragment<Binding : ViewBinding, ViewModel : BaseViewModel>(@L
         safeFlowGather(lifecycleState) {
             collectLatest {
                 success(it)
-                error(it)
+//                error(it)
             }
         }
     }
