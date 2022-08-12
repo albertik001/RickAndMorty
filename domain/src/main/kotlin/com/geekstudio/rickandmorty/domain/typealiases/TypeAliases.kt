@@ -1,4 +1,4 @@
-package com.geekstudio.rickandmorty.core.typealiases
+package com.geekstudio.rickandmorty.domain.typealiases
 
 typealias NotAnActualActivity = Any
 typealias NotAnActualCallbacks = Any
