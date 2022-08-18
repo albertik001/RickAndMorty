@@ -19,5 +19,3 @@ class CharactersRepositoryImpl @Inject constructor(private val charactersApi: Ch
             }
         }
 }
-
-
