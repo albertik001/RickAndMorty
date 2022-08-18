@@ -26,7 +26,7 @@ data class OriginUI(
 )
 
 data class CharactersUI(
- override    val id: Int?,
+    override val id: Int?,
     val name: String?,
     val status: String?,
     val species: String?,
