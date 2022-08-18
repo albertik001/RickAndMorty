@@ -1,6 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BaseItemMaterialCardView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="160dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/image_item_character"
+            android:layout_width="140dp"
+            android:layout_height="160dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription"
+            tools:src="@tools:sample/avatars" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_item_character_content_end_image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="150dp" />
+
+        <TextView
+            android:id="@+id/text_item_character_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textSize_item_character_name"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/guideline_item_character_content_end_image"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@tools:sample/full_names" />
+
+        <ImageView
+            android:id="@+id/image_item_character_status"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="6dp"
+            app:layout_constraintLeft_toRightOf="@id/guideline_item_character_content_end_image"
+            app:layout_constraintTop_toBottomOf="@id/text_item_character_name"
+            tools:ignore="ContentDescription"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/text_item_character_status_and_species"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textSize_item_character_status_and_species"
+            app:layout_constraintBottom_toBottomOf="@id/image_item_character_status"
+            app:layout_constraintLeft_toRightOf="@id/image_item_character_status"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_item_character_status"
+            tools:text="@tools:sample/lorem" />
+
+        <TextView
+            android:id="@+id/text_item_character_last_known_location"
+            style="@style/TextItemCharacterSubtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/last_known_location_COLON"
+            app:layout_constraintLeft_toRightOf="@id/guideline_item_character_content_end_image"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_item_character_status_and_species" />
+
+        <TextView
+            android:id="@+id/text_item_character_last_known_location_data"
+            style="@style/TextItemCharacterDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@id/guideline_item_character_content_end_image"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_item_character_last_known_location"
+            tools:text="@tools:sample/cities" />
+
+        <TextView
+            android:id="@+id/text_item_character_first_seen_in"
+            style="@style/TextItemCharacterSubtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/first_seen_in_COLON"
+            app:layout_constraintBottom_toTopOf="@id/text_item_character_first_seen_in_data"
+            app:layout_constraintLeft_toRightOf="@id/guideline_item_character_content_end_image"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_item_character_last_known_location_data"
+            app:layout_goneMarginBottom="30dp" />
+
+        <ProgressBar
+            android:id="@+id/progressBar_character_first_seen_in"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:indeterminateTint="@color/white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/guideline_item_character_content_end_image"
+            app:layout_constraintTop_toBottomOf="@id/text_item_character_first_seen_in" />
+
+        <TextView
+            android:id="@+id/text_item_character_first_seen_in_data"
+            style="@style/TextItemCharacterDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/guideline_item_character_content_end_image"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_item_character_first_seen_in"
+            tools:text="@tools:sample/lorem" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</com.google.android.material.card.MaterialCardView>
