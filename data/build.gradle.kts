@@ -60,10 +60,8 @@ dependencies {
 
     //Paging 3
     api(libs.paging.paging)
-    api(libs.bundles.paging)
 
     // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
-
 }
