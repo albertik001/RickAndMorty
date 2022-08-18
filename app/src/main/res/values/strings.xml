@@ -2,4 +2,17 @@
     <string name="app_name">RickAndMorty</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--region | ItemCharacter-->
+    <string name="last_known_location_COLON">Last known location:</string>
+    <string name="first_seen_in_COLON">First seen in:</string>
+    <!--endregion-->
+
+    <!--region | CharacterAdapter-->
+    <string name="alive">Alive</string>
+    <string name="dead">Dead</string>
+    <string name="unknown">unknown</string>
+    <string name="hyphen">%1$s - %2$s</string>
+    <!--endregion-->
+
 </resources>
