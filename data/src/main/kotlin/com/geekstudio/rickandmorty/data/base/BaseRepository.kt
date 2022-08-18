@@ -31,10 +31,10 @@ abstract class BaseRepository {
 
         Pager(
             PagingConfig(
-                pageSize = 20,
-                prefetchDistance = 5,
+                pageSize = 10,
+                prefetchDistance = 10,
                 enablePlaceholders = true,
-                initialLoadSize = 20 * 3,
+                initialLoadSize = 10 * 3,
                 maxSize = Int.MAX_VALUE,
                 jumpThreshold = Int.MIN_VALUE
 
