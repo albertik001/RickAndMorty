@@ -4,7 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.geekstudio.rickandmorty.R
 import com.geekstudio.rickandmorty.core.base.BaseDiffUtil
+import com.geekstudio.rickandmorty.core.extensions.loadImageWithGlide
 import com.geekstudio.rickandmorty.databinding.ItemCharacterBinding
 import com.geekstudio.rickandmorty.presentation.models.CharactersUI
 
@@ -23,10 +25,14 @@ class CharactersPagingAdapter :
     class CharactersViewHolder(private val binding: ItemCharacterBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBind(character: CharactersUI) {
-
+            binding.textItemCharacterFirstSeenInData.isSelected = true
+            binding.imageItemCharacter.loadImageWithGlide(character.image)
+            binding.textItemCharacterName.text = character.name
+            binding.textItemCharacterFirstSeenInData.text = character.created
+            binding.textItemCharacterLastKnownLocationData.text = character.location?.name
+            binding.textItemCharacterStatusAndSpecies.text =
+                binding.imageItemCharacterStatus.context
+                    .resources.getString(R.string.hyphen, character.status, character.species)
         }
-
     }
-
-
 }
