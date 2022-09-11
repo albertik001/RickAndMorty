@@ -6,4 +6,10 @@
     <dimen name="textSize_item_character_subtitle">12sp</dimen>
     <dimen name="textSize_item_character_description">14sp</dimen>
     <!--endregion-->
+
+    <!--region ImageBehavior-->
+    <dimen name="spacing_normal">16dp</dimen>
+    <dimen name="image_width">120dp</dimen>
+    <!--endregion-->
+
 </resources>
