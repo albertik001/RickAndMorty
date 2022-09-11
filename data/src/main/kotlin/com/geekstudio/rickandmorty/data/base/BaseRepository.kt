@@ -19,31 +19,25 @@ abstract class BaseRepository {
             gatherIfSucceed?.invoke(data)
             emit(Either.Right(value = data))
         }
-
     }.flowOn(Dispatchers.IO).catch { exception ->
         emit(Either.Left(exception.localizedMessage ?: "An error occurred"))
     }
 
-
     protected fun <Key : Any, Model : Any> doPagingRequest(
         pagingSource: PagingSource<Key, Model>,
-    ) =
+    ) = Pager(
+        PagingConfig(
+            pageSize = 10,
+            prefetchDistance = 10,
+            enablePlaceholders = true,
+            initialLoadSize = 10 * 3,
+            maxSize = Int.MAX_VALUE,
+            jumpThreshold = Int.MIN_VALUE
 
-        Pager(
-            PagingConfig(
-                pageSize = 10,
-                prefetchDistance = 10,
-                enablePlaceholders = true,
-                initialLoadSize = 10 * 3,
-                maxSize = Int.MAX_VALUE,
-                jumpThreshold = Int.MIN_VALUE
-
-            ),
-            pagingSourceFactory =
-            {
-                pagingSource
-            }
-        ).flow
-
-
+        ),
+        pagingSourceFactory =
+        {
+            pagingSource
+        }
+    ).flow
 }
