@@ -6,5 +6,13 @@ import javax.inject.Inject
 class FetchPagedCharactersUseCase @Inject constructor(
     private val charactersRepository: CharactersRepository
 ) {
-    operator fun invoke() = charactersRepository.fetchPagedCharacters()
+
+    operator fun invoke(
+        name: String?,
+        status: String?,
+        species: String?,
+        gender: String?
+    ) = charactersRepository.fetchPagedCharacters(name, status, species, gender)
+
+    operator fun invoke(id: Int) = charactersRepository.fetchSingleCharacter(id)
 }
