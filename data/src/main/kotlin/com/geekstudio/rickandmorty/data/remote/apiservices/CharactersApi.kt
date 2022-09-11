@@ -11,11 +11,10 @@ interface CharactersApi {
     @GET("character")
     suspend fun fetchCharacters(
         @Query("page") page: Int,
-        @Query("name") name: String? = null,
-        @Query("status") status: String? = null,
-        @Query("species") species: String? = null,
-        @Query("type") type: String? = null,
-        @Query("gender") gender: String? = null
+        @Query("name") name: String?,
+        @Query("status") status: String?,
+        @Query("species") species: String?,
+        @Query("gender") gender: String?
     ): RickAndMortyResponse<CharactersDto>
 
     @GET("character/{id}")
