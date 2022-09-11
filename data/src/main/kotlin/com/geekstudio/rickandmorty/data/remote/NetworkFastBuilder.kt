@@ -33,5 +33,4 @@ class OkHttp @Inject constructor() {
         HttpLoggingInterceptor.Level.BODY
 
     )
-
 }
