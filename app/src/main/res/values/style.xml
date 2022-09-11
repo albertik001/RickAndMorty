@@ -8,8 +8,10 @@
     <style name="BaseProgressBar">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:indeterminate">true</item>
         <item name="android:indeterminateTint">@color/white</item>
-        <item name="android:visibility">gone</item>
+        <item name="indicatorColor">@color/white</item>
+        <item name="android:visibility">invisible</item>
     </style>
 
     <style name="BaseItemMaterialCardView">
@@ -36,6 +38,12 @@
         <item name="android:paddingBottom">4dp</item>
         <item name="android:textColor">@drawable/selector_clickable_text_color</item>
         <item name="android:textSize">@dimen/textSize_item_character_description</item>
+    </style>
+    <!--endregion-->
+
+    <!--region SearchViewCursorColor-->
+    <style name="cursorColor" parent="Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
     </style>
     <!--endregion-->
 
