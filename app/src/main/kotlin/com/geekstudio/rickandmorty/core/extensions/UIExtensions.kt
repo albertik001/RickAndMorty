@@ -8,7 +8,7 @@ fun ImageView.loadImageWithGlide(url: Any?) = Glide.with(this).load(url).centerC
 fun ImageView.setImage(uri: String) {
     Glide.with(this)
         .load(uri)
-        .circleCrop()
+        .centerCrop()
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(this)
 }
