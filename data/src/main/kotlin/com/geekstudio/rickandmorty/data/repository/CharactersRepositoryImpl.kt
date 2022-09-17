@@ -2,12 +2,13 @@ package com.geekstudio.rickandmorty.data.repository
 
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.geekstudio.rickandmorty.data.base.BaseRepository
 import com.geekstudio.rickandmorty.data.db.room.daos.CharactersDao
 import com.geekstudio.rickandmorty.data.remote.apiservices.CharactersApi
 import com.geekstudio.rickandmorty.data.remote.dtos.CharactersDto
 import com.geekstudio.rickandmorty.data.remote.dtos.toDomain
 import com.geekstudio.rickandmorty.data.remote.pagingsource.CharactersPagingSource
+import com.geekstudio.rickandmorty.data.repository.base.doPagingRequest
+import com.geekstudio.rickandmorty.data.repository.base.doRequest
 import com.geekstudio.rickandmorty.domain.common.Either
 import com.geekstudio.rickandmorty.domain.models.CharactersModel
 import com.geekstudio.rickandmorty.domain.repository.CharactersRepository
@@ -18,30 +19,27 @@ import javax.inject.Inject
 class CharactersRepositoryImpl @Inject constructor(
     private val charactersApi: CharactersApi,
     private val charactersDao: CharactersDao,
-) : BaseRepository(), CharactersRepository {
+) : CharactersRepository {
 
     override fun fetchPagedCharacters(
-        name: String?,
-        status: String?,
-        species: String?,
-        gender: String?
+        name: String?, status: String?, species: String?, gender: String?
     ): Flow<PagingData<CharactersModel>> {
-        val list = arrayListOf<CharactersDto>()
         return doPagingRequest(
             CharactersPagingSource(
-                charactersApi,
-                name,
-                status,
-                species,
-                gender
+                charactersApi, name, status, species, gender
             )
         ).map { pagingData ->
             pagingData.map {
-                list.add(it)
-                charactersDao.insertAllCharacters(list)
+                addingDataFromRoom(it)
                 it.toDomain()
             }
         }
+    }
+
+    private suspend fun addingDataFromRoom(charactersDto: CharactersDto) {
+        val list = arrayListOf<CharactersDto>()
+        list.add(charactersDto)
+        charactersDao.insertAllCharacters(list)
     }
 
     override fun fetchSingleCharacter(id: Int): Flow<Either<String, CharactersModel>> = doRequest {
@@ -49,10 +47,7 @@ class CharactersRepositoryImpl @Inject constructor(
     }
 
     override fun fetchLocalPagedCharacters(
-        name: String?,
-        status: String?,
-        species: String?,
-        gender: String?
+        name: String?, status: String?, species: String?, gender: String?
     ) = charactersDao.getAllCharacters(name, status, species, gender).map { list ->
         list.map { it.toDomain() }
     }
