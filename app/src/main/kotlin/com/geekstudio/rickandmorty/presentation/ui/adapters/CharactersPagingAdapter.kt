@@ -28,6 +28,23 @@ class CharactersPagingAdapter(
         getItem(position)?.let { holder.onBind(it) }
     }
 
+    override fun onBindViewHolder(
+        holder: CharactersViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isNotEmpty()) {
+            if (payloads[0] is String) {
+                holder.setupFirstSeenIn(
+                    getItem(position)?.firstSeenIn.toString(),
+                    getItem(position)?.episode?.first().toString()
+                )
+            }
+        } else {
+            super.onBindViewHolder(holder, position, payloads)
+        }
+    }
+
     fun setFirstSeenIn(position: Int, firstSeenIn: String) {
         getItem(position)?.firstSeenIn = firstSeenIn
         notifyItemChanged(position)
@@ -66,7 +83,7 @@ class CharactersPagingAdapter(
             }
         }
 
-        private fun setupFirstSeenIn(firstSeenIn: String, episode: String) = with(binding) {
+        fun setupFirstSeenIn(firstSeenIn: String, episode: String) = with(binding) {
             progressBarCharacterFirstSeenIn.isVisible = firstSeenIn.isEmpty()
             textItemCharacterFirstSeenInData.isVisible = firstSeenIn.isNotEmpty()
             if (firstSeenIn.isEmpty()) {
