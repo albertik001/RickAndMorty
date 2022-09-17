@@ -1,7 +1,6 @@
 package com.geekstudio.rickandmorty.presentation.ui.fragments.characters.detail
 
 import android.net.Uri
-import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.navArgs
@@ -30,7 +29,7 @@ class CharacterDetailFragment :
     private val isConnected: ConnectivityStatus by lazy {
         ConnectivityStatus(requireActivity())
     }
-    private val episodeDetailList = arrayListOf<EpisodesUI>()
+    private val episodeDBDetailList = arrayListOf<EpisodesUI>()
 
     override fun initialize() {
         binding.rvEpisodes.adapter = episodesAdapter
@@ -73,6 +72,7 @@ class CharacterDetailFragment :
     }
 
     private fun fetchFirstSeenIn(episodeUrl: Int? = null, check: Boolean, url: String? = null) {
+        val episodeDetailList = arrayListOf<EpisodesUI>()
         if (check) {
             episodeUrl?.let {
                 viewModel.fetchSingleEpisode(episodeUrl)
@@ -86,9 +86,8 @@ class CharacterDetailFragment :
                 try {
                     url?.let {
                         viewModel.fetchLocalSingleEpisode(it).collectLatest { episodeModel ->
-                            episodeDetailList.add(episodeModel.toUI())
-                            Log.e("fuck", "fetchFirstSeenIn: $episodeDetailList")
-                            episodesAdapter.submitList(episodeDetailList)
+                            episodeDBDetailList.add(episodeModel.toUI())
+                            episodesAdapter.submitList(episodeDBDetailList)
                         }
                     }
                 } catch (e: NullPointerException) {
