@@ -78,7 +78,7 @@ class CharacterDetailFragment :
                 viewModel.fetchSingleEpisode(episodeUrl)
                 viewModel.episodesState.spectateUiState(success = {
                     episodeDetailList.add(it)
-                    episodesAdapter.submitList(episodeDetailList)
+                    episodesAdapter.setList(episodeDetailList)
                 })
             }
         } else {
@@ -87,7 +87,7 @@ class CharacterDetailFragment :
                     url?.let {
                         viewModel.fetchLocalSingleEpisode(it).collectLatest { episodeModel ->
                             episodeDBDetailList.add(episodeModel.toUI())
-                            episodesAdapter.submitList(episodeDBDetailList)
+                            episodesAdapter.setList(episodeDBDetailList)
                         }
                     }
                 } catch (e: NullPointerException) {
