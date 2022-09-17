@@ -187,40 +187,40 @@ class CharactersFragment :
     }
 
     private fun fetchFirstSeenIn(position: Int, episodeUrl: String) {
-//        isConnected.observe(viewLifecycleOwner) { connect ->
-//            if (connect) {
-//                viewModel.viewModelScope.launch {
-//                    try {
-//                        getIdFromUrl(episodeUrl)?.let { url ->
-//                            viewModel.fetchSingleEpisode(url).collect {
-//                                when (it) {
-//                                    is Either.Right -> {
-//                                        it.value.toUI().name.let { name ->
-//                                            charactersAdapter.setFirstSeenIn(position, name)
-//                                        }
-//                                    }
-//                                    is Either.Left -> {}
-//                                }
-//                            }
-//                        }
-//                    } catch (e: IndexOutOfBoundsException) {
-//                    }
-//                }
-//            } else {
-//                viewModel.viewModelScope.launch {
-//                    try {
-//                        viewModel.fetchLocalSingleEpisode(episodeUrl).collectLatest {
-//                            it.toUI().name.let { name ->
-//                                charactersAdapter.setFirstSeenIn(position, name)
-//                            }
-//                        }
-//                    } catch (e: NullPointerException) {
-//                    } catch (e: IllegalStateException) {
-//                    } catch (e: IndexOutOfBoundsException) {
-//                    }
-//                }
-//            }
-//        }
+        isConnected.observe(viewLifecycleOwner) { connect ->
+            if (connect) {
+                viewModel.viewModelScope.launch {
+                    try {
+                        getIdFromUrl(episodeUrl)?.let { url ->
+                            viewModel.fetchSingleEpisode(url).collect {
+                                when (it) {
+                                    is Either.Right -> {
+                                        it.value.toUI().name.let { name ->
+                                            charactersAdapter.setFirstSeenIn(position, name)
+                                        }
+                                    }
+                                    is Either.Left -> {}
+                                }
+                            }
+                        }
+                    } catch (e: IndexOutOfBoundsException) {
+                    }
+                }
+            } else {
+                viewModel.viewModelScope.launch {
+                    try {
+                        viewModel.fetchLocalSingleEpisode(episodeUrl).collectLatest {
+                            it.toUI().name.let { name ->
+                                charactersAdapter.setFirstSeenIn(position, name)
+                            }
+                        }
+                    } catch (e: NullPointerException) {
+                    } catch (e: IllegalStateException) {
+                    } catch (e: IndexOutOfBoundsException) {
+                    }
+                }
+            }
+        }
     }
 
     private fun itemClick(id: Int?) {
