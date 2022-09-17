@@ -1,9 +1,7 @@
 package com.geekstudio.rickandmorty.core.extensions
 
+import android.util.Log
 import android.view.View
-import android.widget.ProgressBar
-import androidx.core.view.isVisible
-import com.geekstudio.rickandmorty.core.ui.state.UIState
 import com.geekstudio.rickandmorty.core.utils.OnSingleClickListener
 
 fun View.visible() {
@@ -21,3 +19,5 @@ fun View.invisible() {
 fun View.setOnSingleClickListener(l: (View) -> Unit) {
     setOnClickListener(OnSingleClickListener(l))
 }
+
+fun loge(msg: String, value: Any? = null) = Log.e("fuck", msg + value)
