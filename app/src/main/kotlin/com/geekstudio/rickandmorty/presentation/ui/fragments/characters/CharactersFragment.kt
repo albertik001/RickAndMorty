@@ -8,6 +8,9 @@ import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -122,20 +125,25 @@ class CharactersFragment :
                     charactersAdapter.submitData(it)
                 })
             } else {
-                viewModel.viewModelScope.launch {
-                    viewModel.fetchLocalPagedCharacters(name).collectLatest {
-                        charactersAdapter.submitData(PagingData.from(it.map { charactersModel ->
-                            charactersModel.toUI()
-                        }))
-                        binding.tvNoCharacterFound.isVisible = charactersAdapter.itemCount == 0
-                    }
-                }
+                viewModel.fetchLocalPagedCharacters(name)
             }
         }
     }
 
     override fun launchObservers() {
         subscribeToCharacters()
+        subscribeToLocalCharacters()
+    }
+
+    private fun subscribeToLocalCharacters() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.localCharactersState.collectLatest {
+                    charactersAdapter.submitData(PagingData.from(it))
+                }
+            }
+            binding.tvNoCharacterFound.isVisible = charactersAdapter.itemCount == 0
+        }
     }
 
     private fun subscribeToCharacters() = with(binding) {
@@ -174,54 +182,45 @@ class CharactersFragment :
     }
 
     private fun extractDataRoom(filter: CharacterSelectedFilters?) {
-        viewModel.viewModelScope.launch {
-            viewModel.fetchLocalPagedCharacters(
-                null,
-                filter?.status,
-                filter?.species,
-                filter?.gender
-            ).collectLatest {
-                charactersAdapter.submitData(PagingData.from(it.map { charactersModel ->
-                    charactersModel.toUI()
-                }))
-            }
-        }
+        viewModel.fetchLocalPagedCharacters(null, filter?.status, filter?.species, filter?.gender)
         binding.includedNoInternet.root.gone()
     }
 
     private fun fetchFirstSeenIn(position: Int, episodeUrl: String) {
-        isConnected.observe(viewLifecycleOwner) { connect ->
-            if (connect) {
-                viewModel.viewModelScope.launch {
-                    try {
-                        getIdFromUrl(episodeUrl)?.let { url ->
-                            viewModel.fetchSingleEpisode(url).collect {
-                                when (it) {
-                                    is Either.Right -> {
-                                        it.value.toUI().name.let { name ->
-                                            charactersAdapter.setFirstSeenIn(position, name)
-                                        }
-                                    }
-                                    is Either.Left -> {}
-                                }
-                            }
-                        }
-                    } catch (e: IndexOutOfBoundsException) {
-                    }
-                }
-            } else {
-                viewModel.viewModelScope.launch {
-                    try {
-                        viewModel.fetchLocalSingleEpisode(episodeUrl).collectLatest {
-                            it.toUI().name.let { name ->
-                                charactersAdapter.setFirstSeenIn(position, name)
-                            }
-                        }
-                    } catch (e: IllegalStateException) {
-                    }
-                }
-            }
-        }
+//        isConnected.observe(viewLifecycleOwner) { connect ->
+//            if (connect) {
+//                viewModel.viewModelScope.launch {
+//                    try {
+//                        getIdFromUrl(episodeUrl)?.let { url ->
+//                            viewModel.fetchSingleEpisode(url).collect {
+//                                when (it) {
+//                                    is Either.Right -> {
+//                                        it.value.toUI().name.let { name ->
+//                                            charactersAdapter.setFirstSeenIn(position, name)
+//                                        }
+//                                    }
+//                                    is Either.Left -> {}
+//                                }
+//                            }
+//                        }
+//                    } catch (e: IndexOutOfBoundsException) {
+//                    }
+//                }
+//            } else {
+//                viewModel.viewModelScope.launch {
+//                    try {
+//                        viewModel.fetchLocalSingleEpisode(episodeUrl).collectLatest {
+//                            it.toUI().name.let { name ->
+//                                charactersAdapter.setFirstSeenIn(position, name)
+//                            }
+//                        }
+//                    } catch (e: NullPointerException) {
+//                    } catch (e: IllegalStateException) {
+//                    } catch (e: IndexOutOfBoundsException) {
+//                    }
+//                }
+//            }
+//        }
     }
 
     private fun itemClick(id: Int?) {
