@@ -1,10 +1,10 @@
 package com.geekstudio.rickandmorty.data.repository
 
-import com.geekstudio.rickandmorty.data.base.BaseRepository
 import com.geekstudio.rickandmorty.data.db.room.daos.EpisodesDao
 import com.geekstudio.rickandmorty.data.remote.apiservices.EpisodesApi
 import com.geekstudio.rickandmorty.data.remote.dtos.EpisodesDto
 import com.geekstudio.rickandmorty.data.remote.dtos.toDomain
+import com.geekstudio.rickandmorty.data.repository.base.doRequest
 import com.geekstudio.rickandmorty.domain.common.Either
 import com.geekstudio.rickandmorty.domain.models.EpisodesModel
 import com.geekstudio.rickandmorty.domain.repository.EpisodesRepository
@@ -16,7 +16,7 @@ import javax.inject.Inject
 class EpisodesRepositoryImpl @Inject constructor(
     private val episodeApi: EpisodesApi,
     private val episodesDao: EpisodesDao
-) : BaseRepository(), EpisodesRepository {
+) : EpisodesRepository {
 
     private val episodeListToDao = arrayListOf<EpisodesDto>()
 
