@@ -1,10 +1,15 @@
 package com.geekstudio.rickandmorty.presentation.ui.fragments.characters
 
+import android.app.DownloadManager
+import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.net.Uri
+import android.os.Bundle
+import android.os.Environment
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -31,6 +36,7 @@ import com.geekstudio.rickandmorty.presentation.ui.adapters.paging.LoadStateAdap
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -41,12 +47,20 @@ class CharactersFragment :
     override val viewModel by viewModels<CharactersViewModel>()
     private val args by navArgs<CharactersFragmentArgs>()
     private val charactersAdapter = CharactersPagingAdapter(
-        this::itemClick,
-        this::fetchFirstSeenIn,
+        this::itemClick, this::fetchFirstSeenIn, this::imageAvatarDownload
     )
     private val isConnected: ConnectivityStatus by lazy {
         ConnectivityStatus(requireActivity())
     }
+    private var permission = 0
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            permission = if (it) {
+                1
+            } else {
+                0
+            }
+        }
 
     @Inject
     lateinit var notificationsPreferencesManager: NotificationsPreferencesManager
@@ -57,15 +71,12 @@ class CharactersFragment :
 
     private fun setupAdapterLoader() = with(binding) {
         recyclerCharacters.apply {
-            adapter = charactersAdapter.withLoadStateFooter(
-                footer = LoadStateAdapter { charactersAdapter.retry() }
-            )
+            adapter =
+                charactersAdapter.withLoadStateFooter(footer = LoadStateAdapter { charactersAdapter.retry() })
             layoutManager = LinearLayoutManager(context)
         }
         charactersAdapter.bindUIToLoadState(
-            recyclerCharacters,
-            progressCharactersLoader,
-            tvNoCharacterFound
+            recyclerCharacters, progressCharactersLoader, tvNoCharacterFound
         )
     }
 
@@ -86,6 +97,34 @@ class CharactersFragment :
         setupSearch()
         binding.btnFilter.setOnClickListener {
             findNavController().navigateSafely(R.id.action_charactersFragment_to_filterDialogFragment)
+        }
+    }
+
+    private fun imageAvatarDownload(imageUrl: String, name: String) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                requestPermissionLauncher.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                if (permission == 1) {
+                    try {
+                        val downloadManager =
+                            context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                        val imageLink = Uri.parse(imageUrl)
+                        val request = DownloadManager.Request(imageLink)
+                        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE or DownloadManager.Request.NETWORK_WIFI)
+                            .setMimeType("image/jpeg").setAllowedOverRoaming(false)
+                            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                            .setTitle(name).setDestinationInExternalPublicDir(
+                                Environment.DIRECTORY_PICTURES, File.separator + name + ".jpg"
+                            )
+                        downloadManager.enqueue(request)
+                        showShortDurationSnackbar("Image is downloaded")
+                    } catch (e: IllegalStateException) {
+                        loge("Exp$e")
+                    }
+                } else {
+                    showShortDurationSnackbar("Permission denied!")
+                }
+            }
         }
     }
 
@@ -155,10 +194,7 @@ class CharactersFragment :
                 }
                 notificationsPreferencesManager.isShowCheckInternet = false
                 viewModel.fetchPagedCharacters(
-                    null,
-                    filter?.status,
-                    filter?.species,
-                    filter?.gender
+                    null, filter?.status, filter?.species, filter?.gender
                 ).spectatePaging {
                     charactersAdapter.submitData(it)
                 }
@@ -182,7 +218,9 @@ class CharactersFragment :
     }
 
     private fun extractDataRoom(filter: CharacterSelectedFilters?) {
-        viewModel.fetchLocalPagedCharacters(null, filter?.status, filter?.species, filter?.gender)
+        viewModel.fetchLocalPagedCharacters(
+            null, filter?.status, filter?.species, filter?.gender
+        )
         binding.includedNoInternet.root.gone()
     }
 

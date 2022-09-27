@@ -16,8 +16,8 @@ import com.geekstudio.rickandmorty.presentation.models.CharactersUI
 class CharactersPagingAdapter(
     private val itemCLick: (id: Int?) -> Unit,
     val fetchFirstSeenIn: (position: Int, episodeUrl: String) -> Unit,
-) :
-    PagingDataAdapter<CharactersUI, CharactersPagingAdapter.CharactersViewHolder>(BaseDiffUtil()) {
+    val onLongClickByImageAvatar: (imageUrl: String, name: String) -> Unit
+) : PagingDataAdapter<CharactersUI, CharactersPagingAdapter.CharactersViewHolder>(BaseDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CharactersViewHolder(
         ItemCharacterBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
@@ -29,9 +29,7 @@ class CharactersPagingAdapter(
     }
 
     override fun onBindViewHolder(
-        holder: CharactersViewHolder,
-        position: Int,
-        payloads: MutableList<Any>
+        holder: CharactersViewHolder, position: Int, payloads: MutableList<Any>
     ) {
         if (payloads.isNotEmpty()) {
             if (payloads[0] is String) {
@@ -56,6 +54,15 @@ class CharactersPagingAdapter(
             itemView.setOnSingleClickListener {
                 itemCLick(getItem(absoluteAdapterPosition)?.id)
             }
+
+            binding.imageItemCharacter.setOnLongClickListener {
+                onLongClickByImageAvatar(
+                    getItem(absoluteAdapterPosition)?.image.toString(),
+                    getItem(absoluteAdapterPosition)?.name.toString()
+                )
+                return@setOnLongClickListener false
+            }
+
         }
 
         fun onBind(character: CharactersUI) = with(binding) {
@@ -63,8 +70,10 @@ class CharactersPagingAdapter(
             imageItemCharacter.setImage(character.image)
             textItemCharacterName.text = character.name
             textItemCharacterLastKnownLocationData.text = character.location.name
-            textItemCharacterStatusAndSpecies.text = imageItemCharacterStatus.context
-                .resources.getString(R.string.hyphen, character.status, character.species)
+            textItemCharacterStatusAndSpecies.text =
+                imageItemCharacterStatus.context.resources.getString(
+                    R.string.hyphen, character.status, character.species
+                )
             setupFirstSeenIn(character.firstSeenIn, character.episode.first())
             setupCharacterStatus(character.status)
         }
