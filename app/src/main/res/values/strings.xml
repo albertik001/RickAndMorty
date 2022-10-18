@@ -2,4 +2,39 @@
     <string name="app_name">RickAndMorty</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--region | ItemCharacter-->
+    <string name="last_known_location_COLON">Last known location:</string>
+    <string name="first_seen_in_COLON">First seen in:</string>
+    <!--endregion-->
+
+    <!--region | Character-->
+    <string name="alive">Alive</string>
+    <string name="dead">Dead</string>
+    <string name="unknown">unknown</string>
+    <string name="hyphen">%1$s - %2$s</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="human">Human</string>
+    <string name="alien">Alien</string>
+    <!--endregion-->
+
+    <!--region | Filter-->
+    <string name="status">Status</string>
+    <string name="gender">Gender</string>
+    <string name="species">Species</string>
+    <!--endregion-->
+
+
+    <!--region | Instrumental-->
+    <string name="enter">ENTER</string>
+    <string name="no_internet_connection">There is no internet connection so some actions are not available</string>
+    <string name="retry">Retry</string>
+    <string name="do_not_show_more">Do not show more</string>
+    <string name="or">OR</string>
+    <string name="not_found_character">No character with the given name was found</string>
+    <string name="display_local_data">Display local data</string>
+    <!--endregion-->
+
+
 </resources>

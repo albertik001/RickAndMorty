@@ -23,20 +23,14 @@ abstract class BaseDialogFragment<Binding : ViewBinding, ViewModel : BaseViewMod
     ): View? {
         dialog?.setCancelable(false)
         dialog?.setCanceledOnTouchOutside(false)
-
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
         return inflater.inflate(layoutId, container, false)
-
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         assembleViews()
         initialize()
         setupListeners()

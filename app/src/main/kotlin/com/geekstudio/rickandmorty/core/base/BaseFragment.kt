@@ -3,7 +3,6 @@ package com.geekstudio.rickandmorty.core.base
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
-import androidx.constraintlayout.widget.Group
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -51,7 +50,6 @@ abstract class BaseFragment<Binding : ViewBinding, ViewModel : BaseViewModel>(@L
 
     }
 
-
     protected fun <T : Any> Flow<PagingData<T>>.spectatePaging(
         lifecycleState: Lifecycle.State = Lifecycle.State.STARTED,
         success: suspend (data: PagingData<T>) -> Unit,
@@ -59,11 +57,9 @@ abstract class BaseFragment<Binding : ViewBinding, ViewModel : BaseViewModel>(@L
         safeFlowGather(lifecycleState) {
             collectLatest {
                 success(it)
-                error(it)
             }
         }
     }
-
 
     protected fun <T : Any> StateFlow<UIState<PagingData<T>>>.spectatePagingData(
         lifecycleState: Lifecycle.State = Lifecycle.State.STARTED,
@@ -90,11 +86,11 @@ abstract class BaseFragment<Binding : ViewBinding, ViewModel : BaseViewModel>(@L
                     is UIState.Success -> {
                         success?.invoke(it.data)
                     }
+                    else -> {}
                 }
             }
         }
     }
-
 
     protected fun <T> StateFlow<UIState<T>>.spectateUiState(
         lifecycleState: Lifecycle.State = Lifecycle.State.STARTED,
@@ -140,12 +136,12 @@ abstract class BaseFragment<Binding : ViewBinding, ViewModel : BaseViewModel>(@L
     }
 
     protected fun <T> UIState<T>.assembleViewVisibility(
-        group: Group,
+        view: View,
         loader: CircularProgressIndicator,
         navigationSucceed: Boolean = false,
     ) {
         fun displayLoader(isDisplayed: Boolean) {
-            group.isVisible = isDisplayed
+            view.isVisible = !isDisplayed
             loader.isVisible = isDisplayed
         }
         when (this) {
@@ -167,6 +163,5 @@ abstract class BaseFragment<Binding : ViewBinding, ViewModel : BaseViewModel>(@L
 
             }
         }
-
     }
 }

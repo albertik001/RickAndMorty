@@ -14,9 +14,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 abstract class BaseViewModel : ViewModel() {
+
     protected fun <T> mutableUiStateFlow() = MutableStateFlow<UIState<T>>(UIState.Idle())
 
-    protected fun <T, S> Flow<Either<String, T>>.gatherRequest(
+    protected open fun <T, S> Flow<Either<String, T>>.gatherRequest(
         state: MutableStateFlow<UIState<S>>,
         mappedData: (data: T) -> S,
     ) {

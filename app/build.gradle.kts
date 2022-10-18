@@ -14,7 +14,6 @@ plugins {
 
     // Hilt
     id(libs.plugins.hilt.android.get().pluginId)
-
 }
 
 android {
@@ -38,6 +37,7 @@ android {
             )
         }
         getByName(config.versions.debugBuildType.get()) {
+            buildConfigField("String", "BASE_URL", "\"https://rickandmortyapi.com/api/\"")
             applicationIdSuffix = ".debug"
             isDebuggable = true
         }
@@ -82,5 +82,4 @@ dependencies {
     // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
-
 }

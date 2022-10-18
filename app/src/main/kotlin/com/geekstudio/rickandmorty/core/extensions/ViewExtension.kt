@@ -1,5 +1,6 @@
 package com.geekstudio.rickandmorty.core.extensions
 
+import android.util.Log
 import android.view.View
 import com.geekstudio.rickandmorty.core.utils.OnSingleClickListener
 
@@ -18,3 +19,5 @@ fun View.invisible() {
 fun View.setOnSingleClickListener(l: (View) -> Unit) {
     setOnClickListener(OnSingleClickListener(l))
 }
+
+fun loge(msg: String, value: Any? = null) = Log.e("fuck", msg + value)
