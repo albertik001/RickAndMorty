@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.net.Uri
-import android.os.Bundle
 import android.os.Environment
 import android.widget.EditText
 import android.widget.ImageView
@@ -85,6 +84,7 @@ class CharactersFragment :
     }
 
     private fun customizeSearchView() {
+        binding.searchView.setIconifiedByDefault(false)
         val searchView: EditText =
             binding.searchView.findViewById(androidx.appcompat.R.id.search_src_text)
         searchView.setHintTextColor(Color.WHITE)
@@ -241,7 +241,7 @@ class CharactersFragment :
                                 }
                             }
                         }
-                    } catch (e: IndexOutOfBoundsException) {
+                    } catch (_: IndexOutOfBoundsException) {
                     }
                 }
             } else {
@@ -252,9 +252,9 @@ class CharactersFragment :
                                 charactersAdapter.setFirstSeenIn(position, name)
                             }
                         }
-                    } catch (e: NullPointerException) {
-                    } catch (e: IllegalStateException) {
-                    } catch (e: IndexOutOfBoundsException) {
+                    } catch (_: NullPointerException) {
+                    } catch (_: IllegalStateException) {
+                    } catch (_: IndexOutOfBoundsException) {
                     }
                 }
             }
